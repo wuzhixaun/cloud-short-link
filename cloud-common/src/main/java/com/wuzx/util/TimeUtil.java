@@ -31,7 +31,7 @@ public class TimeUtil {
 
     /**
      * LocalDateTime 转 字符串，指定日期格式
-     * @param time
+     * @param localDateTime
      * @param pattern
      * @return
      */
@@ -68,7 +68,7 @@ public class TimeUtil {
     /**
      * timestamp 转 字符串，默认日期格式
      *
-     * @param time
+     * @param timestamp
      * @return
      */
     public static String format(long timestamp) {
