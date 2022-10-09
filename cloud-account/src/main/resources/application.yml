@@ -1,0 +1,17 @@
+server:
+  port: 8001
+
+# 应用名称
+spring:
+  application:
+    name: cloud-account
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr:
+
+# 配置mybatis-plus打印日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
