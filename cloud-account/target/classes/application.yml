@@ -4,7 +4,7 @@ server:
 # 应用名称
 spring:
   application:
-    name: @artifactId@
+    name: cloud-account
   profiles:
     active: prod
 
@@ -18,20 +18,6 @@ spring:
         prefix: ${spring.application.name}
         file-extension: yml
         group: ${spring.profiles.active}
-
-  redis:
-    client-type: jedis
-    host: wuzx.cool
-    password: wuzhixuan
-    port: 6379
-    jedis:
-  pool:
-  # 连接池最大连接数(使用负值表示没有限制) max-active: 100
-  # 连接池中的最大空闲连接
-  max-idle: 100
-  # 连接池中的最小空闲连接
-  min-idle: 100
-  # 连接池最大阻塞等待时间(使用负值表示没有限制) max-wait: 60000
 
 #数据库配置
   datasource:
@@ -49,4 +35,3 @@ mybatis-plus:
 sms:
   app-code: 6999d4df3e7d48028470bbe517169a8d
   template-id: M72CB42894
-
