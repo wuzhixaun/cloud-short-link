@@ -1,15 +1,16 @@
 package com.wuzx.controller;
 
 import com.google.code.kaptcha.Producer;
+import com.wuzx.controller.request.SendCodeRequest;
+import com.wuzx.enums.BizCodeEnum;
+import com.wuzx.enums.SendCodeEnum;
 import com.wuzx.service.NotifyService;
 import com.wuzx.util.CommonUtil;
 import com.wuzx.util.JsonData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -58,7 +59,6 @@ public class NotifyController {
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             ImageIO.write(bufferedImage, "jpg", outputStream);
             outputStream.flush();
-            outputStream.close();
         } catch (IOException e) {
             log.error("获取流出错:{}", e.getMessage());
         }
@@ -79,9 +79,23 @@ public class NotifyController {
      *
      * @return
      */
-    @RequestMapping("send_code")
-    public JsonData sendCode() {
-        return JsonData.buildSuccess();
+    @PostMapping("send_code")
+    public JsonData sendCode(@RequestBody SendCodeRequest sendCodeRequest, HttpServletRequest request) {
+        String key = getCaptchKey(request);
+        // redis中保存的验证码
+        String cacheCaptcha = redisTemplate.opsForValue().get(key);
+        // 前端传过来的验证码
+        final String captcha = sendCodeRequest.getCaptcha();
+
+        if (captcha != null && null != cacheCaptcha && captcha.equalsIgnoreCase(cacheCaptcha)) {
+            //成功
+            redisTemplate.delete(key);
+            // 发送短信
+            return notifyService.sendCode(SendCodeEnum.USER_REGISTER,sendCodeRequest.getTo());
+        } else {
+            return JsonData.buildResult(BizCodeEnum.CODE_CAPTCHA_ERROR);
+        }
+
     }
 
 
