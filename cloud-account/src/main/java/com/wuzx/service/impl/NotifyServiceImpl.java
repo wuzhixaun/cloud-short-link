@@ -59,23 +59,51 @@ public class NotifyServiceImpl implements NotifyService {
             //当前时间戳-验证码发送的时间戳，如果小于60秒，则不给重复发送
             long leftTime = CommonUtil.getCurrentTimestamp() - ttl;
             if (leftTime < (1000 * 60)) {
-                log.info("重复发送短信验证码，时间间隔:{}秒",leftTime);
+                log.info("重复发送短信验证码，时间间隔:{}秒", leftTime);
                 return JsonData.buildResult(BizCodeEnum.CODE_LIMITED);
             }
         }
 
         String code = CommonUtil.getRandomCode(6);
         //生成拼接好验证码
-        String value = code+"_"+CommonUtil.getCurrentTimestamp();
-        redisTemplate.opsForValue().set(cacheKey,value,CODE_EXPIRED, TimeUnit.MILLISECONDS);
-        if(CheckUtil.isEmail(to)){
+        String value = code + "_" + CommonUtil.getCurrentTimestamp();
+        redisTemplate.opsForValue().set(cacheKey, value, CODE_EXPIRED, TimeUnit.MILLISECONDS);
+        if (CheckUtil.isEmail(to)) {
             //发送邮箱验证码  TODO
 
-        }else if(CheckUtil.isPhone(to)){
+        } else if (CheckUtil.isPhone(to)) {
 
             //发送手机验证码
             smsComponent.sendAli(to, "SMS_173251911", code);
         }
         return JsonData.buildSuccess();
+    }
+
+    /**
+     * 验证码校验逻辑
+     * @param sendCodeEnum
+     * @param to
+     * @param code
+     * @return
+     */
+    @Override
+    public boolean checkCode(SendCodeEnum sendCodeEnum, String to, String code) {
+
+        // 生成短信验证码redis key
+        String cacheKey = String.format(RedisKey.CHECK_CODE_KEY, sendCodeEnum.name(), to);
+        // 获取redis值
+        final String cacheValue = redisTemplate.opsForValue().get(cacheKey);
+
+        if (StringUtils.isNoneBlank(cacheValue)) {
+            // 获取验证码
+            final String cacheCode = cacheValue.split("_")[0];
+            if (cacheCode.equalsIgnoreCase(code)) {
+                // 删除验证码
+                redisTemplate.delete(cacheKey);
+                return true;
+            }
+
+        }
+        return false;
     }
 }

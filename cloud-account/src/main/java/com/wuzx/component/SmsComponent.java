@@ -97,7 +97,7 @@ public class SmsComponent {
 
 
         try {
-            final Client client = createClient("xxx", "xxx");
+            final Client client = createClient("LTAI4FkQU7cZ1b7GgsYVxfsC", "MhlMRKjubibtQjCRJa8eNGU635hnOx");
             final SendSmsRequest sendSmsRequest = new SendSmsRequest()
                     .setSignName(SignName)
                     .setTemplateCode(templateCode)

@@ -52,3 +52,11 @@ sms:
   app-code: 6999d4df3e7d48028470bbe517169a8d
   template-id: M72CB42894
 
+# 阿里云OSS配置
+aliyun:
+  oss:
+    endpoint: oss-cn-shenzhen.aliyuncs.com
+    bucketname: wcloud-link
+    access-key-id: LTAI5tJWRHV7SNde97B8swXh
+    access-key-secret: nlGAI9rD5Dql1hPwYVVj1EWmUWKzAY
+
