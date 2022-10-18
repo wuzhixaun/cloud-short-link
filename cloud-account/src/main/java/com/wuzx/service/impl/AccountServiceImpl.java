@@ -1,5 +1,6 @@
 package com.wuzx.service.impl;
 
+import com.wuzx.controller.request.AccountLoginRequest;
 import com.wuzx.controller.request.AccountRegisterRequest;
 import com.wuzx.enums.AuthTypeEnum;
 import com.wuzx.enums.BizCodeEnum;
@@ -7,6 +8,7 @@ import com.wuzx.enums.SendCodeEnum;
 import com.wuzx.manager.AccountManager;
 import com.wuzx.model.AccountDO;
 import com.wuzx.mapper.AccountMapper;
+import com.wuzx.model.LoginUser;
 import com.wuzx.service.AccountService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wuzx.service.NotifyService;
@@ -18,6 +20,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * <p>
@@ -66,6 +71,9 @@ public class AccountServiceImpl  implements AccountService {
         // 认证级别
         accountDO.setAuth(AuthTypeEnum.DEFAULT.name());
 
+        // 生成唯一账号
+        accountDO.setAccountNo(CommonUtil.getCurrentTimestamp());
+
         // 设置密码 秘钥(盐)
         accountDO.setSecret("$1$" + CommonUtil.getStringNumRandom(8));
 
@@ -75,10 +83,41 @@ public class AccountServiceImpl  implements AccountService {
         final int rows = accountManager.insert(accountDO);
         log.info("rows:{},注册成功:{}", rows, accountDO);
 
-        // 用户注册成功，发放福利
+        // 用户注册成功，发放福利 TODO
         userRegisterInitTask(accountDO);
 
         return JsonData.buildSuccess();
+    }
+
+    /**
+     * 用户登录
+     *
+     * @param loginRequest
+     * @return
+     */
+
+    @Override
+    public JsonData login(AccountLoginRequest loginRequest) {
+        final List<AccountDO> accountDOList = accountManager.findByPhone(loginRequest.getPhone());
+
+        if (!CollectionUtils.isEmpty(accountDOList) && accountDOList.size() == 1) {
+            final AccountDO accountDO = accountDOList.get(0);
+
+            String cryptPwd = Md5Crypt.md5Crypt(loginRequest.getPwd().getBytes(), accountDO.getSecret());
+
+            if (cryptPwd.equals(accountDO.getPwd())) {
+                final LoginUser loginUser = LoginUser.builder().build();
+                BeanUtils.copyProperties(accountDO, loginUser);
+                // 生成TOKEN TODO
+                return JsonData.buildSuccess();
+            } else {
+                return JsonData.buildResult(BizCodeEnum.ACCOUNT_PWD_ERROR);
+            }
+
+
+        } else {
+            return JsonData.buildResult(BizCodeEnum.ACCOUNT_UNREGISTER);
+        }
     }
 
     /**

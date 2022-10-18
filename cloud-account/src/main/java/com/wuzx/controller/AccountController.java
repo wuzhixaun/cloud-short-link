@@ -1,6 +1,7 @@
 package com.wuzx.controller;
 
 
+import com.wuzx.controller.request.AccountLoginRequest;
 import com.wuzx.controller.request.AccountRegisterRequest;
 import com.wuzx.enums.BizCodeEnum;
 import com.wuzx.service.AccountService;
@@ -51,6 +52,17 @@ public class AccountController {
     @PostMapping("/register")
     public JsonData register(@RequestBody AccountRegisterRequest registerRequest) {
         return accountService.register(registerRequest);
+    }
+
+
+    /**
+     * 用户登录
+     * @param loginRequest
+     * @return
+     */
+    @PostMapping("/login")
+    public JsonData login(@RequestBody AccountLoginRequest loginRequest) {
+        return accountService.login(loginRequest);
     }
 }
 

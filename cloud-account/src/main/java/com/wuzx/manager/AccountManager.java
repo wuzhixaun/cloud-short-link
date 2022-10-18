@@ -2,6 +2,8 @@ package com.wuzx.manager;
 
 import com.wuzx.model.AccountDO;
 
+import java.util.List;
+
 /**
  * @author: wuzhixuan
  * @date 2022/10/19 01:00
@@ -10,4 +12,6 @@ import com.wuzx.model.AccountDO;
 public interface AccountManager {
 
     int insert(AccountDO accountDO);
+
+    List<AccountDO> findByPhone(String phone);
 }

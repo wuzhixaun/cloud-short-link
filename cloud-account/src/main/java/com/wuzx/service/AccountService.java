@@ -1,5 +1,6 @@
 package com.wuzx.service;
 
+import com.wuzx.controller.request.AccountLoginRequest;
 import com.wuzx.controller.request.AccountRegisterRequest;
 import com.wuzx.model.AccountDO;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -21,4 +22,11 @@ public interface AccountService {
      * @return
      */
     JsonData register(AccountRegisterRequest registerRequest);
+
+    /**
+     * 用户登录
+     * @param loginRequest
+     * @return
+     */
+    JsonData login(AccountLoginRequest loginRequest);
 }
