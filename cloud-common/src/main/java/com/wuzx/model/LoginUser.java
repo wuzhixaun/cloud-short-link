@@ -19,6 +19,10 @@ import lombok.NoArgsConstructor;
 public class LoginUser {
 
     /**
+     * 账用户id
+     */
+    private long id;
+    /**
      * 账号
      */
     private long accountNo;
