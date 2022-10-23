@@ -13,6 +13,7 @@ import com.wuzx.service.AccountService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wuzx.service.NotifyService;
 import com.wuzx.util.CommonUtil;
+import com.wuzx.util.IDUtil;
 import com.wuzx.util.JsonData;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.Md5Crypt;
@@ -72,7 +73,7 @@ public class AccountServiceImpl  implements AccountService {
         accountDO.setAuth(AuthTypeEnum.DEFAULT.name());
 
         // 生成唯一账号
-        accountDO.setAccountNo(CommonUtil.getCurrentTimestamp());
+        accountDO.setAccountNo(Long.valueOf(IDUtil.geneSnowFlakeID().toString()));
 
         // 设置密码 秘钥(盐)
         accountDO.setSecret("$1$" + CommonUtil.getStringNumRandom(8));
