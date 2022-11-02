@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wuzx.service.NotifyService;
 import com.wuzx.util.CommonUtil;
 import com.wuzx.util.IDUtil;
+import com.wuzx.util.JWTUtil;
 import com.wuzx.util.JsonData;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.Md5Crypt;
@@ -109,8 +110,8 @@ public class AccountServiceImpl  implements AccountService {
             if (cryptPwd.equals(accountDO.getPwd())) {
                 final LoginUser loginUser = LoginUser.builder().build();
                 BeanUtils.copyProperties(accountDO, loginUser);
-                // 生成TOKEN TODO
-                return JsonData.buildSuccess();
+                final String token = JWTUtil.geneJsonWebToken(loginUser);
+                return JsonData.buildSuccess(token);
             } else {
                 return JsonData.buildResult(BizCodeEnum.ACCOUNT_PWD_ERROR);
             }

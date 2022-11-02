@@ -2,7 +2,7 @@ package com.wuzx.model;
 
 import com.wuzx.enums.BizCodeEnum;
 import com.wuzx.util.CommonUtil;
-import com.wuzx.util.JWTUtils;
+import com.wuzx.util.JWTUtil;
 import com.wuzx.util.JsonData;
 import feign.Request;
 import io.jsonwebtoken.Claims;
@@ -39,7 +39,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         if (StringUtils.isNoneBlank(accessToken)) {
-            Claims claims = JWTUtils.checkJWT(accessToken);
+            Claims claims = JWTUtil.checkJWT(accessToken);
             if (null == claims) {
                 // 未登录
                 CommonUtil.sendJsonMessage(response, JsonData.buildResult(BizCodeEnum.ACCOUNT_UNLOGIN));
@@ -70,6 +70,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        CommonUtil.sendJsonMessage(response, JsonData.buildResult(BizCodeEnum.ACCOUNT_UNLOGIN));
         return false;
     }
 

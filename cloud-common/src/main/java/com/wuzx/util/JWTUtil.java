@@ -14,21 +14,21 @@ import java.util.Date;
  * @Version 1.0
  */
 @Slf4j
-public class JWTUtils {
+public class JWTUtil {
     /**
      * 主题
      */
-    private static final String SUBJECT = "xdclass";
+    private static final String SUBJECT = "wuzhixuan";
 
     /**
      * 加密密钥
      */
-    private static final String SECRET = "xdclass.net168";
+    private static final String SECRET = "wuzx.cool";
 
     /**
      * 令牌前缀
      */
-    private static final String TOKNE_PREFIX = "dcloud-link";
+    private static final String TOKNE_PREFIX = "cloud-link";
 
 
     /**
@@ -76,12 +76,12 @@ public class JWTUtils {
         final Claims claims;
         try {
             claims = Jwts.parser().setSigningKey(SECRET)
-                    .parseClaimsJwt(token.replace(TOKNE_PREFIX, ""))
+                    .parseClaimsJws(token.replace(TOKNE_PREFIX, ""))
                     .getBody();
             return claims;
         } catch (Exception e) {
 
-            log.error("jwt 解密失败");
+            log.error("jwt 解密失败 {}",e.getMessage());
             return null;
         }
     }
