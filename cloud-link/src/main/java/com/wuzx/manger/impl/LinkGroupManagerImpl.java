@@ -46,4 +46,11 @@ public class LinkGroupManagerImpl implements LinkGroupManager {
         return linkGroupMapper.selectList(new QueryWrapper<LinkGroupDO>()
                 .eq("account_no", accountNo));
     }
+
+    @Override
+    public int updateById(LinkGroupDO linkGroupDO) {
+        return linkGroupMapper.update(linkGroupDO, new QueryWrapper<LinkGroupDO>()
+                .eq("id", linkGroupDO.getId())
+                .eq("account_no", linkGroupDO.getAccountNo()));
+    }
 }

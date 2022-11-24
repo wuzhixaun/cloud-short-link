@@ -1,6 +1,7 @@
 package com.wuzx.service.impl;
 
 import com.wuzx.controller.request.LinkGroupAddRequest;
+import com.wuzx.controller.request.LinkGroupUpdateRequest;
 import com.wuzx.manger.LinkGroupManager;
 import com.wuzx.model.LinkGroupDO;
 import com.wuzx.model.LoginInterceptor;
@@ -68,5 +69,19 @@ public class LinkGroupServiceImpl implements LinkGroupService {
         }).collect(Collectors.toList());
 
         return groupVOList;
+    }
+
+
+    @Override
+    public int updateById(LinkGroupUpdateRequest request) {
+
+        final long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+        LinkGroupDO linkGroupDO = LinkGroupDO.builder()
+                .title(request.getTitle())
+                .accountNo(accountNo)
+                .id(request.getId())
+                .build();
+
+        return linkGroupManager.updateById(linkGroupDO);
     }
 }

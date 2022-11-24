@@ -42,4 +42,10 @@ public interface LinkGroupManager {
      * @return
      */
     List<LinkGroupDO> listAllGroup(long accountNo);
+
+    /**
+     * 更新锻炼分组
+     * @param linkGroupDO
+     */
+    int updateById(LinkGroupDO linkGroupDO);
 }

@@ -2,6 +2,7 @@ package com.wuzx.controller;
 
 
 import com.wuzx.controller.request.LinkGroupAddRequest;
+import com.wuzx.controller.request.LinkGroupUpdateRequest;
 import com.wuzx.enums.BizCodeEnum;
 import com.wuzx.service.LinkGroupService;
 import com.wuzx.util.JsonData;
@@ -64,6 +65,12 @@ public class LinkGroupController {
         return JsonData.buildSuccess(linkGroupVO);
     }
 
+
+    /**
+     * 查询所有的分组信息
+     *
+     * @return
+     */
     @GetMapping("/list")
     public JsonData findUserAllLinkGroup() {
         List<LinkGroupVO> list = linkGroupService.listAllGroup();
@@ -71,4 +78,15 @@ public class LinkGroupController {
     }
 
 
+    /**
+     * 修改短链分组信息
+     *
+     * @param request
+     * @return
+     */
+    @PutMapping("/update")
+    public JsonData update(@RequestBody LinkGroupUpdateRequest request) {
+        int rows = linkGroupService.updateById(request);
+        return rows == 1 ? JsonData.buildSuccess() : JsonData.buildResult(BizCodeEnum.GROUP_OPER_FAIL);
+    }
 }

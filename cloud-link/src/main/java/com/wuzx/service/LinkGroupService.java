@@ -1,6 +1,7 @@
 package com.wuzx.service;
 
 import com.wuzx.controller.request.LinkGroupAddRequest;
+import com.wuzx.controller.request.LinkGroupUpdateRequest;
 import com.wuzx.vo.LinkGroupVO;
 
 import java.util.List;
@@ -39,4 +40,11 @@ public interface LinkGroupService {
      * @return
      */
     List<LinkGroupVO> listAllGroup();
+
+    /**
+     * 修改短链的分组
+     * @param request
+     * @return
+     */
+    int updateById(LinkGroupUpdateRequest request);
 }
