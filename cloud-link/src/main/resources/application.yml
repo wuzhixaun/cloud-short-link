@@ -98,5 +98,12 @@ spring:
             inline:
               sharding-column: account_no
               algorithm-expression: ds$->{account_no %2}
+#----------短链，策略:分库+分表--------------
+# 先进行水平分库，然后再水平分表
+        short_link:
+          database-strategy:
+            standard:
+              sharding-column: code
+              precise-algorithm-class-name: com.wuzx.strategy.CustomDBPreciseShardingAlgorithm
 
 
