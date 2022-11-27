@@ -40,12 +40,24 @@ spring:
   shardingsphere:
     datasource:
       # 数据源名称
-      names: ds0
+      names: ds0,ds1
       ds0:
         connectionTimeoutMilliseconds: 30000
         driver-class-name: com.mysql.cj.jdbc.Driver
         idleTimeoutMilliseconds: 60000
-        jdbc-url: jdbc:mysql://wuzx.cool:30006/cloud_link?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        jdbc-url: jdbc:mysql://wuzx.cool:30006/cloud_link_0?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        maintenanceIntervalMilliseconds: 30000
+        maxLifetimeMilliseconds: 1800000
+        maxPoolSize: 50
+        minPoolSize: 50
+        password: 123456
+        type: com.zaxxer.hikari.HikariDataSource
+        username: root
+      ds1:
+        connectionTimeoutMilliseconds: 30000
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        idleTimeoutMilliseconds: 60000
+        jdbc-url: jdbc:mysql://wuzx.cool:30006/cloud_link_1?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
         maintenanceIntervalMilliseconds: 30000
         maxLifetimeMilliseconds: 1800000
         maxPoolSize: 50
@@ -69,5 +81,10 @@ spring:
                 id: ${workId}
             #id生成策略
             type: SNOWFLAKE
+          # 短链组，策略。水平分库，水平分表
+          database-strategy:
+            inline:
+              sharding-column: account_no
+              algorithm-expression: ds$->{account_no %2}
 
 
