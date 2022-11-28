@@ -101,6 +101,19 @@ spring:
 #----------短链，策略:分库+分表--------------
 # 先进行水平分库，然后再水平分表
         short_link:
+          actual-data-nodes: ds0.short_link,ds1.short_link,dsa.short_link
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+            props:
+              worker:
+                id: ${workId}
+          # 分表策略
+          table-strategy:
+            standard:
+              sharding-column: code
+              precise-algorithm-class-name: com.wuzx.strategy.CustomTablePreciseShardingAlgorithm
+          # 分库策略
           database-strategy:
             standard:
               sharding-column: code

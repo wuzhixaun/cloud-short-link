@@ -1,5 +1,7 @@
 package com.wuzx.component;
 
+import com.wuzx.strategy.ShadingDBConfig;
+import com.wuzx.strategy.ShadingTabeConfig;
 import com.wuzx.util.CommonUtil;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +32,7 @@ public class ShortLinkComponent {
         //转62进制
         String shortLinkCode = encodeToBase62(murmurHash32);
 
-        return shortLinkCode;
+        return ShadingDBConfig.getRandomDbPrefix() + shortLinkCode + ShadingTabeConfig.getRandomTablePrefix();
     }
 
     /**

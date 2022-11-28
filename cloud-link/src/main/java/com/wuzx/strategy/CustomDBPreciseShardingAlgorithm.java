@@ -9,6 +9,7 @@ import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
 import java.util.Collection;
 
 /**
+ * 水平分库-标准分片策略-精准分片算法
  * @author: wuzhixuan
  * @date 2022/11/27 13:58
  * @Version 1.0
